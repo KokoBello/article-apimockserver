@@ -32,17 +32,19 @@ We start all mocks with wiremock's - proxy-all switch. When running wiremock
 
 ### Setup mocking
 
-Since the api mock server is based on Wiremock we can simply use the well-known Wiremock rest api to register stub mappings, or use pre-loaded mapping files.
-We chose to create a number of mock clients, that helps the test writer to setup whatever preconditions the test needs, in each external system.
+Since the api mock server is based on wiremock we can simply use the well-known wiremock rest api, to interact with the wiremock runners exposed by our api-mock-server. We can register stub mappings, verify behaviour and all the things available when using vanilla wiremock.  We can for example take advantage of wiremocks support for pre-loaded mapping files.
 
+For some systems, (or requests), we have setup static mocks. We pack the api-mock-server with some pre-defined stub files, giving us mocks that allways will be in place. We have though found it very easy-to-use and convenient, to create a number of mock clients. These helps the test writer to setup whatever preconditions the test needs, in each external system.
+
+Example mock client
 ```
-public class BifCustomerIdentityMockClient extends BaseWiremock {
+public class CustomerServiceMockClient {
 
-  private WireMock wireMochClient = WireMock.create()
+  private WireMock wireMockClient = WireMock.create()
                 .https().host("customer-system.com").build());
 
   public void givenCustomer(Integer ssn, String name) {
-        wiremock.register(
+        wireMockClient.register(
                 get("/api/rest/v1/customers?ssn="+ taxpayerId)
                         .willReturn(aResponse()
                                 .withStatus(200)
@@ -56,7 +58,30 @@ public class BifCustomerIdentityMockClient extends BaseWiremock {
 }
 ```
 
-For some systems, (or requests), we have setup static mocks. WireMock supports file based stubs, so we can pack stub files with api-server, giving us mocks that allways will be in place.
+Once a set of these mock clients has been created the actual testing could look something like this. An important thing to have in mind, is that, dependeing on, what we select to mock, we are effectively creating a slice of test data, that may or may not, exist in the systems we currently aren't mocking. As I said before, we do need to make a * where we use as many "real" api's as possible, and only what what is necessary to make the test possible to repeat over time.
+
+
+```
+    @BeforeEach
+    public void setupTestData() {
+        //given
+        customerServiceMockClient.givenCustomer("111111", "Test Customer");
+        creditCheckServiceMockClient.givenCreditLimit("111111", 5000);
+        whateverServiceMockClient.givenSomething(id, testData1, testData2);        
+        stockServiceMockClient.givenStockLevel("P111", 5);
+    }
+
+    @Test
+    public void test() throws Exception {
+      //kick off the actual test
+    }
+    
+    @AfterEach
+    public void setupTestData() {
+        // we either want to reset mocks, to not interfer with other testing,
+        // or keep the setup to aid troubleshooting
+    }
+```
 
 ### Recording mode
 
