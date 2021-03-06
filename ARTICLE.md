@@ -4,6 +4,8 @@ In my current project, we're building a distributed e-commerce solution, consist
 
 Some of these "supporting" systems we use to accomplish all this are already in place. Some are off-the-shelfe products, some are external and some are built by other teams. Either way, we mave more or less control over them, and basically every system has its unique use case on how to setup, and maintain its data.
 
+The idea with standalone mock servers isn't in any way new, and doesn't solve all problems, but we are really satisfied with how easily it was to get started, and the level of confidence we get with relatively low effort. I will deomstrate how we achived this, using a simple wrapper of the excelellent Wiremock framework.
+
 ## The problem
 
 As with all distributed platform, there's a challenge to achieve confidence that the platform, as a whole, actually works. At least to some acceptible degree.
@@ -24,8 +26,6 @@ Finally, we also have testers. The purpose of the automated e2e tests is to cove
 
 A environment can be complex to setup and maintain and we wanted to avoid setting up a dedicated environment for our automated e2e testing, since that means additional setup and maintenance. The goal was to (re)-use one of our existing environments, and simultaneous support both mocked automated testing, and manual testing, including calls to some, or all legacy system. And that all this should also be simple to setup and maintain.
 
-The idea with mock servers isn't in any way new, but we are really satisfied with how easy this was accomplished, using a simple wrapper of the excelellent  Wiremock framework.
-
 #To accomplish this we, on merge to master, deploys a new versions of a service. Once the deploy has finisished we run the e2e tests, #and then we may or may not promote it to production.
 
 
@@ -38,6 +38,9 @@ You could of course use a known data set. Relying on that whatever data our test
 Or maybe, we create our own universal test data builder, that, after some time, starts to be more complex than the actual platform it's supposed to support. It's a sad day when the test data builder gets its own project in jira,
 
 Finally there's allways that issue with that monster those guys'n'girls in the neighbouring team have built, or rather; is trying to build? We do need to use it, but our test crashes and burns each and every day, because they suck!
+
+### Environment
+
 
 ## The solution
 
