@@ -1,3 +1,6 @@
+
+WIP: draft 2021-03-11
+
 # How we setup a api mock server for distributed e2e testing
 
 In my current project, we're building a distributed e-commerce solution, consisting of a number of microservices, communicating with supporting, (often) legacy, systems. As in all e-commerce solutions we need to lookup customers, perform credit, risk and fraud checks, payments, lookup offers, products and stock levels, among other things.
