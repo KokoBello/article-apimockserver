@@ -1,11 +1,27 @@
 
-WIP: draft 2021-03-11
+WIP: draft 2021-03-14
+
+Test terminolog (often a bit confusing)
+
+* Platform tests. Spanning 
+- e2e
+- contract
+- acceptance
+
+* Application tests
+- system
+- component
+Test a 
+- unit
+Test a single or a few classes
 
 # How we setup a api mock server for distributed e2e testing
 
-In my current project, we're building a distributed e-commerce solution, consisting of a number of microservices, communicating with supporting, (often) legacy, systems. As in all e-commerce solutions we need to lookup customers, perform credit, risk and fraud checks, payments, lookup offers, products and stock levels, among other things.
+In my current project, we're building a distributed e-commerce solution, consisting of a number of microservices, communicating with supporting, (sometimes) legacy, systems. As in all e-commerce solutions we need to lookup customers, perform credit, risk and fraud checks, payments, lookup offers, products and stock levels, among other things.
 
-Some of these "supporting" systems we use to accomplish all this are already in place. Some are off-the-shelfe products, some are external and some are built by other teams. Either way, we mave more or less control over them, and basically every system has its unique use case on how to setup, and maintain its data.
+Some of the systems are off-the-shelfe products, some are external and some are built by other teams. Either way, we have more or less control over them, and basically every system has its unique use case on how to setup, and maintain its data.
+
+
 
 The idea with standalone mock servers isn't in any way new, and doesn't solve all problems, but we are really satisfied with how easily it was to get started, and the level of confidence we get with relatively low effort. I will deomstrate how we achived this, using a simple wrapper of the excelellent Wiremock framework.
 
@@ -13,7 +29,9 @@ The idea with standalone mock servers isn't in any way new, and doesn't solve al
 
 As with all distributed platform, there's a challenge to achieve confidence that the platform, as a whole, actually works. At least to some acceptible degree.
 
-I personally believe that such confidence is hard to achieve with unit, component or system testing. With unit or component testing I mean the kind of tests that test a small part of the platform in isolation. Of course these tests have great value in verififying that a specific class, unit, component or system, works as expected. But it only tells ut so much on how a complex distributed platform works as a whole. In theory the whole will work if all the parts are verified. I do think that it can be true, but in my opinion, such test setup can be complex and expensive to maintain.
+I personally believe that such confidence is hard to achieve with unit, component or system testing. 
+
+With unit or component testing I mean the kind of tests that test a small part of the platform in isolation. Of course these tests have great value in verififying that a specific class, unit, component or system, works as expected. But it only tells ut so much on how a complex distributed platform works as a whole. In theory the whole will work if all the parts are verified. I do think that it can be true, but in my opinion, such test setup can be complex and expensive to maintain.
 
 Of course there's a lot of value in class, unit, component or system tests, but I wouldn't feel confident with the platform unless there's also, manual or automated, high level e2e testing.
 
@@ -115,6 +133,8 @@ Once a set of these mock clients has been created the actual testing could look 
 The api mock server can also be run in recording mode, capturing requests and responses, to help getting started with setting upp mocking. We can start the server in recording mode, and fire off some requests. These requests will be captured into files, which we then can use to create on-demand mocking clients, or static stub files.
 
 ## Gotchas
+
+Contract testing
 
 Keeping mocks up to date
 
